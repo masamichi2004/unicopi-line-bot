@@ -26,7 +26,7 @@ async def callback(request: Request):
     body = await request.body()
     data = json.loads(body)
     
-    if data['event']:
+    if data['events']:
         try:
             await handle_message(data)
         except IndexError:

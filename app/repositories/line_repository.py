@@ -1,5 +1,5 @@
 from linebot import LineBotApi, WebhookHandler
-from linebot.models import TextSendMessage, QuickReply, QuickReplyButton, MessageAction
+from linebot.models import TextSendMessage
 from typing import Dict, Any
 
 class LineRepository:

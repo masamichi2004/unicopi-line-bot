@@ -1,5 +1,5 @@
 from linebot.models import TextSendMessage, QuickReply, QuickReplyButton, MessageAction
-from repositories.line_repository import LineRepository
+from app.repositories.line_repository import LineRepository
 from typing import Dict, Any, List
 
 class LineUseCase:

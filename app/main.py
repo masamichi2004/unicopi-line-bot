@@ -3,17 +3,14 @@ import json
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
-from repositories.line_repository import LineRepository
-from use_cases.line_use_case import LineUseCase
+from app.repositories.line_repository import LineRepository
+from app.use_cases.line_use_case import LineUseCase
 from dotenv import load_dotenv
 
 load_dotenv()
 
 line_channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
 line_channel_secret = os.getenv("LINE_CHANNEL_SECRET")
-
-line_bot_api = LineBotApi(line_channel_access_token)
-handler = WebhookHandler(line_channel_secret)
 
 line_repository = LineRepository(
     line_bot_api=LineBotApi(line_channel_access_token), 

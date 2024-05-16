@@ -35,7 +35,7 @@ async def callback(request: Request):
             return await line_use_case.reply_store_info_message(
                 incoming_text=data['events'][0]['message']['text'],
                 reply_token=data['events'][0]['replyToken'],
-                options=['カフェ', 'ラーメン', '洋食'],
+                options=['ラーメン', 'カフェ', '洋食'],
                 reply_text='はい、どのジャンルの店舗情報をお探しですか？'
                 )
         except IndexError:

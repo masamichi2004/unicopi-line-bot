@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
 from linebot.models import TextSendMessage, QuickReply, QuickReplyButton, MessageAction
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
 
@@ -25,6 +26,7 @@ async def read_root():
 async def callback(request: Request):
     body = await request.body()
     data = json.loads(body)
+    logging.info(data)
     
     if data['events']:
         try:

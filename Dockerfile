@@ -15,6 +15,4 @@ RUN pip install --upgrade pip && \
 COPY . .
 
 # Uvicornを使用してアプリケーションを実行
-ENTRYPOINT ["sh", "-c"]
-CMD ["uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
-
+CMD sh -c "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"

@@ -30,7 +30,7 @@ async def callback(request: Request):
         try:
             await handle_message(data)
         except IndexError:
-            raise Exception("Invalid message")
+            return Exception("Invalid message")
     return {"Error": "Event not found"}
 
 

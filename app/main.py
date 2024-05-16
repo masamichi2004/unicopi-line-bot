@@ -3,9 +3,9 @@ import json
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
-from linebot.models import TextSendMessage, QuickReply, QuickReplyButton, MessageAction
+from repositories.line_repository import LineRepository
+from use_cases.line_use_case import LineUseCase
 from dotenv import load_dotenv
-import logging
 
 load_dotenv()
 
@@ -15,6 +15,12 @@ line_channel_secret = os.getenv("LINE_CHANNEL_SECRET")
 line_bot_api = LineBotApi(line_channel_access_token)
 handler = WebhookHandler(line_channel_secret)
 
+line_repository = LineRepository(
+    line_bot_api=LineBotApi(line_channel_access_token), 
+    handler=WebhookHandler(line_channel_secret)
+    )
+
+line_use_case = LineUseCase(line_repository)
 
 app = FastAPI()
 
@@ -26,42 +32,14 @@ async def read_root():
 async def callback(request: Request):
     body = await request.body()
     data = json.loads(body)
-    logging.info(data)
     
-    if data['events']:
+    if line_repository.is_event_exist(data):
         try:
-            await handle_message(data)
+            return await line_use_case.reply_store_info_message(data)
         except IndexError:
             return Exception("Invalid message")
     return {"Error": "Event not found"}
 
-
-
-async def handle_message(data):
-    incoming_text = data['events'][0]['message']['text']
-    reply_token = data['events'][0]['replyToken']
-    
-    if incoming_text == '店舗情報一覧を取得':
-        reply_text = 'はい、何の店舗情報を取得しますか？'
-        answer_with_quick_reply = TextSendMessage(
-            text=reply_text,
-            quick_reply=QuickReply(
-                items=[
-                    QuickReplyButton(
-                        action=MessageAction(label="ラーメン", text="ラーメン")
-                    ),
-                    QuickReplyButton(
-                        action=MessageAction(label="カフェ", text="カフェ")
-                    ),
-                    QuickReplyButton(
-                        action=MessageAction(label="洋食", text="洋食")
-                    )
-                ]
-            )
-        )
-        line_bot_api.reply_message(reply_token, answer_with_quick_reply)
-        return
-        
 
 app.add_middleware(
     CORSMiddleware,

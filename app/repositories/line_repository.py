@@ -10,5 +10,5 @@ class LineRepository:
     def is_event_exist(self, data: Dict[str, Any]) -> bool:
         return data['events']
     
-    def reply_message(self, reply_token: Any, answer_with_quick_reply: TextSendMessage):
-        self.line_bot_api.reply_message(reply_token, answer_with_quick_reply)
+    def reply_message(self, reply_token: Any, reply: TextSendMessage):
+        self.line_bot_api.reply_message(reply_token, reply)

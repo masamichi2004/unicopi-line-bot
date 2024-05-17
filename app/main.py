@@ -31,12 +31,19 @@ async def callback(request: Request):
     data = json.loads(body)
     
     if line_repository.is_event_exist(data):
+        user_message = data['events'][0]['message']['text']
         try:
-            return await line_use_case.reply_store_info_message(
-                incoming_text=data['events'][0]['message']['text'],
-                reply_token=data['events'][0]['replyToken'],
-                options=['ラーメン', 'カフェ', '洋食'],
-                reply_text='はい、どのジャンルの店舗情報をお探しですか？'
+            if user_message == '店舗情報一覧を取得':
+                return await line_use_case.quick_reply_message(
+                    reply_token=data['events'][0]['replyToken'],
+                    options=['ラーメン', 'カフェ', '洋食'],
+                    reply_text='はい、どのジャンルの店舗情報をお探しですか？'
+                )
+            elif user_message == 'クーポンを取得':
+                return await line_use_case.quick_reply_message(
+                    reply_token=data['events'][0]['replyToken'],
+                    options=['ラーメンクーポン', 'カフェクーポン', '洋食クーポン'],
+                    reply_text='はい、どのジャンルのクーポンをお探しですか？'
                 )
         except IndexError:
             return Exception("Invalid message")

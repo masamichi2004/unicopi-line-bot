@@ -19,10 +19,9 @@ class LineUseCase:
         return TextSendMessage(text=reply_text, quick_reply=quick_reply)
     
     
-    async def reply_store_info_message(self, incoming_text: str, reply_token: Any, options: List[str], reply_text: str) -> None:
+    async def quick_reply_message(self, reply_token: Any, options: List[str], reply_text: str) -> None:
+        quick_reply = self.create_quick_reply(options)
+        answer_with_quick_reply = self.get_quick_reply_message(reply_text, quick_reply)
+        self.line_repository.reply_message(reply_token, answer_with_quick_reply)
+        return
         
-        if incoming_text == '店舗情報一覧を取得':
-            quick_reply = self.create_quick_reply(options)
-            answer_with_quick_reply = self.get_quick_reply_message(reply_text, quick_reply)
-            self.line_repository.reply_message(reply_token, answer_with_quick_reply)
-            return

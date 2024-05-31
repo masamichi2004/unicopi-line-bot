@@ -36,14 +36,20 @@ async def callback(request: Request):
             if user_message == '店舗情報一覧を取得':
                 return await line_use_case.quick_reply_message(
                     reply_token=data['events'][0]['replyToken'],
-                    options=['ラーメン', 'カフェ', '洋食'],
-                    reply_text='はい、どのジャンルの店舗情報をお探しですか？'
+                    options=['大阪茨木キャンパス(OIC)', 'びわこ草津キャンパス(BKC)'],
+                    reply_text='ご自身が在籍しているキャンパスを選択してください。'
                 )
             elif user_message == 'クーポンを取得':
                 return await line_use_case.quick_reply_message(
                     reply_token=data['events'][0]['replyToken'],
                     options=['ラーメンクーポン', 'カフェクーポン', '洋食クーポン'],
                     reply_text='はい、どのジャンルのクーポンをお探しですか？'
+                )
+            elif user_message == '大阪茨木キャンパス(OIC)':
+                return await line_use_case.reply_message(
+                    reply_token=data['events'][0]['replyToken'],
+                    options=['ラーメン', 'カフェ', '洋食'],
+                    eply_text='はい、どのジャンルの店舗情報をお探しですか？'
                 )
         except IndexError:
             return Exception("Invalid message")

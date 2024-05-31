@@ -49,7 +49,13 @@ async def callback(request: Request):
                 return await line_use_case.reply_message(
                     reply_token=data['events'][0]['replyToken'],
                     options=['ラーメン', 'カフェ', '洋食'],
-                    eply_text='はい、どのジャンルの店舗情報をお探しですか？'
+                    reply_text='はい、どのジャンルの店舗情報をお探しですか？'
+                )
+            elif user_message == 'びわこ草津キャンパス(BKC)':
+                return await line_use_case.reply_message(
+                    reply_token=data['events'][0]['replyToken'],
+                    options=['ラーメン', 'カフェ', '洋食'],
+                    reply_text='はい、どのジャンルの店舗情報をお探しですか？'
                 )
         except IndexError:
             return Exception("Invalid message")

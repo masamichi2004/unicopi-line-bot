@@ -32,39 +32,40 @@ async def callback(request: Request):
     
     if line_repository.is_event_exist(data):
         user_message = data['events'][0]['message']['text']
+        reply_token = data['events'][0]['replyToken']
         try:
             # 店舗情報
             if user_message == '店舗情報一覧を取得':
                 return await line_use_case.quick_reply_message(
-                    reply_token=data['events'][0]['replyToken'],
+                    reply_token,
                     options=['大阪茨木キャンパス(OIC)', 'びわこ草津キャンパス(BKC)'],
                     reply_text='ご自身が在籍しているキャンパスを選択してください。'
                 )
             elif user_message == '大阪茨木キャンパス(OIC)':
                 return await line_use_case.quick_reply_message(
-                    reply_token=data['events'][0]['replyToken'],
-                    options=['ラーメン', 'カフェ', '洋食'],
+                    reply_token,
+                    options=['ラーメン', 'カフェ', 'デート'],
                     reply_text='大阪茨木キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
             elif user_message == 'びわこ草津キャンパス(BKC)':
                 return await line_use_case.quick_reply_message(
-                    reply_token=data['events'][0]['replyToken'],
-                    options=['ラーメン', 'カフェ', '洋食'],
+                    reply_token,
+                    options=['ラーメン', 'カフェ', 'デート'],
                     reply_text='びわこ草津キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
 
             # クーポン情報
             elif user_message == 'クーポンを取得':
                 return await line_use_case.quick_reply_message(
-                    reply_token=data['events'][0]['replyToken'],
+                    reply_token,
                     options=['OIC', 'BKC'],
                     reply_text='在籍中のキャンパスを選択してください。'
                 )  
                 
             elif user_message in ['OIC', 'BKC']:
                 return await line_use_case.quick_reply_message(
-                    reply_token=data['events'][0]['replyToken'],
-                    options=['ラーメンクーポン', 'カフェクーポン', '洋食クーポン'],
+                    reply_token,
+                    options=['ラーメンクーポン', 'カフェクーポン', 'デートクーポン'],
                     reply_text=f'{user_message}のクーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
                 )
         except IndexError:

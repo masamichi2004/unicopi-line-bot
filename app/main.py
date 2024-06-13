@@ -20,6 +20,8 @@ line_repository = LineRepository(
 
 line_use_case = LineUseCase(line_repository)
 
+logging.basicConfig(level=logging.INFO)
+
 app = FastAPI()
 
 @app.get("/")

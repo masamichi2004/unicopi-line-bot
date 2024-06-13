@@ -6,6 +6,7 @@ from linebot import LineBotApi, WebhookHandler
 from app.repositories.line_repository import LineRepository
 from app.use_cases.line_use_case import LineUseCase
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
 
@@ -29,6 +30,7 @@ async def read_root():
 async def callback(request: Request):
     body = await request.body()
     data = json.loads(body)
+    logging.info(data)
     
     if line_repository.is_event_exist(data):
         user_message = data['events'][0]['message']['text']

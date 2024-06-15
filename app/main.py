@@ -6,7 +6,7 @@ from linebot import LineBotApi, WebhookHandler
 from app.repository.line_repository import LineRepository
 from app.usecase.line_use_case import LineUseCase
 from app.repository.userStorage.mongodb.mongodb import  UserStorageRepository, NewUserStorageRepository
-from app.service.replyMessenger.line.line import ReplyMessageService, NewReplyMessageService
+from app.service.replyMessenger.LINE.line import ReplyMessageService, NewReplyMessageService
 from app.handler.health.health import healthHandler
 from dotenv import load_dotenv
 from typing import Tuple

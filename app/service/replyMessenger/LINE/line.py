@@ -1,10 +1,10 @@
-from app.service.replyMessenger.reply_message import ReplyMessengerService
+from app.service.replyMessenger.reply_message import ReplyMessageService
 from linebot import LineBotApi, WebhookHandler
 from linebot.models import QuickReply, QuickReplyButton, MessageAction
 from typing import List
 
 
-class ReplyMessengerServiceImpl(ReplyMessengerService):
+class ReplyMessageServiceImpl(ReplyMessageService):
     def __init__(self, api: LineBotApi, handler: WebhookHandler):
         self.api = api
         self.handler = handler
@@ -22,8 +22,8 @@ class ReplyMessengerServiceImpl(ReplyMessengerService):
 
     
     
-def NewReplyMessageService(api: LineBotApi, handler: WebhookHandler) -> ReplyMessengerService:
-    return ReplyMessengerServiceImpl(
+def NewReplyMessageService(api: LineBotApi, handler: WebhookHandler) -> ReplyMessageService:
+    return ReplyMessageServiceImpl(
         api=api,
         handler=handler
     )

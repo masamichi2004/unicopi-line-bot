@@ -1,11 +1,15 @@
 import os
-import json
-from fastapi import FastAPI, Request
+from pymongo import MongoClient
+from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
 from app.repository.line_repository import LineRepository
 from app.usecase.line_use_case import LineUseCase
+from app.service.replyMessenger.line.line import ReplyMessageService, NewReplyMessageService
+from app.repository.userStorage.mongodb.mongodb import  UserStorageRepository, NewUserStorageRepository
+from app.handler.health.health import healthHandler
 from dotenv import load_dotenv
+from typing import Tuple
 import logging
 
 load_dotenv()
@@ -13,25 +17,41 @@ load_dotenv()
 line_channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
 line_channel_secret = os.getenv("LINE_CHANNEL_SECRET")
 
-line_repository = LineRepository(
-    line_bot_api=LineBotApi(line_channel_access_token), 
-    handler=WebhookHandler(line_channel_secret)
-    )
+def newMongoClient() -> MongoClient:
+    client = MongoClient(os.getenv("MONGO_URI"))
+    return client
+
+def newLineClient() -> Tuple[LineBotApi, WebhookHandler]:
+    api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
+    handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
+    return api, handler
+    
+
+userStorageRepo:UserStorageRepository = NewUserStorageRepository(newMongoClient())
+replyMessengerService:ReplyMessageService = NewReplyMessageService(*newLineClient())
+
+line_repository = LineRepository(*newLineClient())
 
 line_use_case = LineUseCase(line_repository)
 
 logging.basicConfig(level=logging.INFO)
 
+
+healthRouter = APIRouter(
+    prefix="/health",
+    tags=["health"],
+    responses={404: {"description": "Not found"}},
+)
+
 app = FastAPI()
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+@healthRouter.get("/")
+async def health():
+    return healthHandler()
 
-@app.post("/")
+@app.post("/webhook")
 async def callback(request: Request):
-    body = await request.body()
-    data = json.loads(body)
+    data = await request.json()
     logging.info(data)
     
     if line_repository.is_event_exist(data):
@@ -90,3 +110,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.include_router(healthRouter)

@@ -14,9 +14,6 @@ import logging
 
 load_dotenv()
 
-line_channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
-line_channel_secret = os.getenv("LINE_CHANNEL_SECRET")
-
 def newMongoClient() -> MongoClient:
     client = MongoClient(os.getenv("MONGO_URI"))
     return client

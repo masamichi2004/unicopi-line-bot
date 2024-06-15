@@ -1,12 +1,14 @@
 from linebot.models import TextSendMessage, QuickReply, QuickReplyButton, MessageAction
 from app.repository.line_repository import LineRepository
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 class LineUseCase:
     def __init__(self, line_repository: LineRepository):
         self.line_repository = line_repository
         
-    def create_quick_reply(self, categories: List[str]) -> QuickReply:
+    def create_quick_reply(self, categories: Optional[List[str]] = None) -> QuickReply:
+        if not categories:
+            return None
         quick_reply_buttons = [
             QuickReplyButton(
                 action=MessageAction(label=category, text=category)

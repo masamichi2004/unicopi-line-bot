@@ -3,8 +3,8 @@ import json
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
-from app.repositories.line_repository import LineRepository
-from app.use_cases.line_use_case import LineUseCase
+from app.repository.line_repository import LineRepository
+from app.usecase.line_use_case import LineUseCase
 from dotenv import load_dotenv
 import logging
 

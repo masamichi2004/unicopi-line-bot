@@ -18,6 +18,10 @@ class ReplyMessageServiceImpl(ReplyMessageService):
         ]
         return QuickReply(items=quick_reply_buttons)
     
+    def reply_message(self, reply_token: str, message: str) -> None:
+        self.api.reply_message(reply_token, message)
+        return
+    
     
 
     

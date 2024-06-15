@@ -1,0 +1,26 @@
+# Exported from Render on 2024-06-15T15:37:07Z
+services:
+- type: web
+  name: unicopi
+  runtime: docker
+  repo: https://github.com/MasamichiKanakubo/unicopi
+  plan: starter
+  envVars:
+  - key: MONGO_URI
+    sync: false
+  - key: MONGO_USERNAME
+    sync: false
+  - key: MONGO_PASSWORD
+    sync: false
+  - key: LINE_CHANNEL_SECRET
+    sync: false
+  - key: LINE_CHANNEL_ACCESS_TOKEN
+    sync: false
+  - key: .env
+    sync: false
+  region: singapore
+  dockerContext: .
+  dockerfilePath: Dockerfile
+  rootDir: ./
+  pullRequestPreviewsEnabled: true
+version: "1"

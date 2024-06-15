@@ -57,6 +57,12 @@ async def callback(request: Request):
                     options=['ラーメン', 'カフェ', 'デート'],
                     reply_text='びわこ草津キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
+            elif user_message == 'あいうえお':
+                return await line_use_case.quick_reply_message(
+                    reply_token,
+                    options=None,
+                    reply_text='あいうえおの次の文字を選択してください。'
+                )
 
             # クーポン情報
             elif user_message == 'クーポンを取得':

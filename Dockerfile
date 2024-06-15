@@ -4,6 +4,8 @@ FROM python:3.11.3-slim
 # 作業ディレクトリを指定
 WORKDIR /app
 
+ENV PYTHONPATH=/app
+
 # 依存関係ファイルをコピー
 COPY requirements.txt .
 

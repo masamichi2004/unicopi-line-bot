@@ -67,7 +67,7 @@ app.add_middleware(
 )
 
 
-async def messageManager(data: Any) -> Any:
+def messageManager(data: Any) -> Any:
     if not data['events']:
         return 'No event'
     

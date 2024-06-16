@@ -25,7 +25,7 @@ def newLineClient() -> Tuple[LineBotApi, WebhookHandler]:
     
 
 userStorageRepo:UserStorageRepository = NewUserStorageRepository(newMongoClient())
-replyMessengerService:ReplyMessageService = NewReplyMessageService(*newLineClient())
+replyMessageService:ReplyMessageService = NewReplyMessageService(*newLineClient())
 
 line_repository = LineRepository(*newLineClient())
 

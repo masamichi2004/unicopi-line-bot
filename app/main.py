@@ -52,7 +52,7 @@ async def health():
 @v1Router.post("/webhook")
 async def callback(request: Request):
     data = await request.json()
-    logging.info(data)
+    logging.debug(data)
     return messageManager(data)
     
 app = FastAPI()
@@ -77,7 +77,7 @@ def messageManager(data: Any) -> Any:
         user_text = data['events'][0]['message']['text'],
         reply_token = data['events'][0]['replyToken']
     )
-    logging.info(webhookInput.user_text)
+    logging.debug(webhookInput.user_text)
     
     if webhookInput.user_text == 'アンケートに回答する':
         return registerUserFromLineController(

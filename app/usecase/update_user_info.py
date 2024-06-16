@@ -6,7 +6,7 @@ from app.entities.io.io import WebhookInput
 from typing import Any, List, Tuple
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class UpdateUserInfo(ABC):
@@ -20,7 +20,7 @@ class UpdateUserInfoImpl(UpdateUserInfo):
         self.reply_message_service = reply_message_service
         
     def excute(self, input: WebhookInput) -> Tuple[Any, Exception]:
-        logging.info(f'input.user_text: {input.user_text}')
+        logging.debug(f'input.user_text: {input.user_text}')
         try:
             if input.user_text in ['男性', '女性', 'その他']:
                 self.user_storage_repo.update_user_info(
@@ -68,6 +68,7 @@ class UpdateUserInfoImpl(UpdateUserInfo):
                         reply_token=input.reply_token,
                         reply_text='クーポンのご利用にはアンケートへの回答が必須です'
                     )
+                    logging.debug(f'result: {result}')
                     return result, None
                 options = ['BKCエリアのクーポン', 'OICエリアのクーポン']
                 reply = self.reply_message_service.create_quick_reply_message(

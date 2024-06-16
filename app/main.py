@@ -51,7 +51,8 @@ async def health():
 
 @v1Router.post("/webhook")
 async def callback(request: Request):
-    return messageManager(request)
+    data = await request.json()
+    return messageManager(data)
     
 app = FastAPI()
 app.include_router(healthRouter)
@@ -67,7 +68,6 @@ app.add_middleware(
 
 
 async def messageManager(data: Any) -> Any:
-    data = await data.json()
     if not data['events']:
         return 'No event'
     

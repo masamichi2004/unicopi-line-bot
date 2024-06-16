@@ -1,7 +1,7 @@
 from app.service.replyMessenger.reply_message import ReplyMessageService
 from linebot import LineBotApi, WebhookHandler
-from linebot.models import QuickReply, QuickReplyButton, MessageAction, TextSendMessage
-from typing import List, Any
+from linebot.models import QuickReply, QuickReplyButton, MessageAction
+from typing import List
 
 
 class ReplyMessageServiceImpl(ReplyMessageService):
@@ -9,25 +9,18 @@ class ReplyMessageServiceImpl(ReplyMessageService):
         self.api = api
         self.handler = handler
     
-    def create_quick_reply_message(self, categories: List[str], reply_text: str) -> TextSendMessage:
+    def create_quick_reply(self, categories: List[str]) -> QuickReply:
         quick_reply_buttons = [
             QuickReplyButton(
                 action=MessageAction(label=category, text=category)
             )
             for category in categories
         ]
-        quick_reply = QuickReply(items=quick_reply_buttons)
-        
-        return TextSendMessage(text=reply_text, quick_reply=quick_reply)
+        return QuickReply(items=quick_reply_buttons)
     
-    def quick_reply_message(self, reply_token: str, reply: TextSendMessage) -> None:
-        self.api.reply_message(reply_token, reply)
+    def reply_message(self, reply_token: str, message: str) -> None:
+        self.api.reply_message(reply_token, message)
         return
-    
-    def reply_message(self, reply_token: str, reply_text: str) -> None:
-        self.api.reply_message(reply_token, TextSendMessage(text=reply_text))
-        return
-        
     
     
 

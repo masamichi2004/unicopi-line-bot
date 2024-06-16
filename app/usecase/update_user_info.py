@@ -4,6 +4,9 @@ from app.service.replyMessenger.reply_message import ReplyMessageService
 from abc import ABC, abstractmethod
 from app.entities.io.io import WebhookInput
 from typing import Any, List, Tuple
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class UpdateUserInfo(ABC):
@@ -17,6 +20,7 @@ class UpdateUserInfoImpl(UpdateUserInfo):
         self.reply_message_service = reply_message_service
         
     def excute(self, input: WebhookInput) -> Tuple[Any, Exception]:
+        logging.info(f'input.user_text: {input.user_text}')
         try:
             if input.user_text in ['男性', '女性', 'その他']:
                 self.user_storage_repo.update_user_info(

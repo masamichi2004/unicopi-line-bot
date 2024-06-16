@@ -8,6 +8,6 @@ class ReplyMessageService(ABC):
         pass
     
     @abstractmethod
-    def quicK_reply_message(self, reply_token: str, reply: TextSendMessage) -> None:
+    def quick_reply_message(self, reply_token: str, reply: TextSendMessage) -> None:
         pass
     

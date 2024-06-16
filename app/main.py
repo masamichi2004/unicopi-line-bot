@@ -3,13 +3,18 @@ from pymongo import MongoClient
 from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
-from app.repository.line_repository import LineRepository
-from app.usecase.line_use_case import LineUseCase
+from app.entities.io.io import WebhookInput
+from app.controller.v1.register_user_from_line import registerUserFromLineController
+from app.controller.v1.update_user_info import updateUserInfoController
+from app.controller.v1.quick_reply_message import quickReplyMessageController
 from app.repository.userStorage.mongodb.mongodb import  UserStorageRepository, NewUserStorageRepository
 from app.service.replyMessenger.LINE.line import ReplyMessageService, NewReplyMessageService
+from app.usecase.register_user_from_line import NewRegisterUserFromLine
+from app.usecase.update_user_info import NewUpdateUserInfo
+from app.usecase.quick_reply_message import NewQuickReplyMessage
 from app.controller.health.health import healthController
 from dotenv import load_dotenv
-from typing import Tuple
+from typing import Tuple, Any
 import logging
 
 load_dotenv()
@@ -22,17 +27,11 @@ def newLineClient() -> Tuple[LineBotApi, WebhookHandler]:
     api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
     handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
     return api, handler
-    
 
 userStorageRepo:UserStorageRepository = NewUserStorageRepository(newMongoClient())
 replyMessageService:ReplyMessageService = NewReplyMessageService(*newLineClient())
 
-line_repository = LineRepository(*newLineClient())
-
-line_use_case = LineUseCase(line_repository)
-
 logging.basicConfig(level=logging.INFO)
-
 
 healthRouter = APIRouter(
     prefix="/health",
@@ -52,57 +51,8 @@ async def health():
 
 @v1Router.post("/webhook")
 async def callback(request: Request):
-    data = await request.json()
-    logging.info(data)
+    return messageManager(request)
     
-    if line_repository.is_event_exist(data):
-        user_message = data['events'][0]['message']['text']
-        reply_token = data['events'][0]['replyToken']
-        try:
-            # 店舗情報
-            if user_message == '店舗情報一覧を取得':
-                return await line_use_case.quick_reply_message(
-                    reply_token,
-                    options=['大阪茨木キャンパス(OIC)', 'びわこ草津キャンパス(BKC)'],
-                    reply_text='ご自身が在籍しているキャンパスを選択してください。'
-                )
-            elif user_message == '大阪茨木キャンパス(OIC)':
-                return await line_use_case.quick_reply_message(
-                    reply_token,
-                    options=['ラーメン', 'カフェ', 'デート'],
-                    reply_text='大阪茨木キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
-                )
-            elif user_message == 'びわこ草津キャンパス(BKC)':
-                return await line_use_case.quick_reply_message(
-                    reply_token,
-                    options=['ラーメン', 'カフェ', 'デート'],
-                    reply_text='びわこ草津キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
-                )
-            elif user_message == 'あいうえお':
-                return await line_use_case.quick_reply_message(
-                    reply_token,
-                    options=None,
-                    reply_text='あいうえおの次の文字を選択してください。'
-                )
-
-            # クーポン情報
-            elif user_message == 'クーポンを取得':
-                return await line_use_case.quick_reply_message(
-                    reply_token,
-                    options=['OIC', 'BKC'],
-                    reply_text='在籍中のキャンパスを選択してください。'
-                )  
-                
-            elif user_message in ['OIC', 'BKC']:
-                return await line_use_case.quick_reply_message(
-                    reply_token,
-                    options=['ラーメンクーポン', 'カフェクーポン', 'デートクーポン'],
-                    reply_text=f'{user_message}のクーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
-                )
-        except IndexError:
-            return Exception("Invalid message")
-    return {"Error": "Event not found"}
-
 app = FastAPI()
 app.include_router(healthRouter)
 app.include_router(v1Router)
@@ -114,3 +64,38 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+async def messageManager(data: Any) -> Any:
+    data = await data.json()
+    if not data['events']:
+        return 'No event'
+    
+    webhookInput = WebhookInput(
+        user_id = data['events'][0]['source']['userId'],
+        user_text = data['events'][0]['message']['text'],
+        reply_token = data['events'][0]['replyToken']
+    )
+    
+    if webhookInput.user_text == 'アンケートに回答する':
+        return registerUserFromLineController(
+            webhookInput, 
+            usecase=NewRegisterUserFromLine(user_storage_repo=userStorageRepo, reply_message_service=replyMessageService))
+    
+    elif webhookInput.user_text in all_enquete_options:
+        return updateUserInfoController(
+            webhookInput, 
+            usecase=NewUpdateUserInfo(user_storage_repo=userStorageRepo, reply_message_service=replyMessageService)
+            )
+    
+    elif webhookInput.user_text in all_quick_reply_options:
+        return quickReplyMessageController(
+            webhookInput,
+            usecase=NewQuickReplyMessage(reply_message_service=replyMessageService)
+            )
+    
+    else: 
+        return {"detail": "No event found"}
+    
+all_enquete_options = ['男性', '女性', 'その他', '立命館大学(BKC)', '立命館大学(BKC以外)', 'その他の大学', '1回生', '2回生', '3回生', '4回生']
+all_quick_reply_options = ['立命館大学BKCエリア', '立命館大学OICエリア','BKCエリアのクーポン', 'OICエリアのクーポン']

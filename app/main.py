@@ -16,11 +16,12 @@ from app.controller.health.health import healthController
 from dotenv import load_dotenv
 from typing import Tuple, Any
 import logging
+import certifi
 
 load_dotenv()
 
 def newMongoClient() -> MongoClient:
-    client = MongoClient(os.getenv("MONGO_URI"))
+    client = MongoClient(os.getenv("MONGO_URI"),   tlsCAFile=certifi.where())
     return client
 
 def newLineClient() -> Tuple[LineBotApi, WebhookHandler]:

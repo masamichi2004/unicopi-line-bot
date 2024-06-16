@@ -24,7 +24,7 @@ class ReplyMessageServiceImpl(ReplyMessageService):
         self.api.reply_message(reply_token, reply)
         return
     
-    def reply_message(self, reply_token: Any, reply_text: str) -> None:
+    def reply_message(self, reply_token: str, reply_text: str) -> None:
         self.api.reply_message(reply_token, TextSendMessage(text=reply_text))
         return
         

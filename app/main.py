@@ -79,18 +79,18 @@ async def messageManager(data: Any) -> Any:
     
     if webhookInput.user_text == 'アンケートに回答する':
         return registerUserFromLineController(
-            webhookInput, 
+            input=webhookInput, 
             usecase=NewRegisterUserFromLine(user_storage_repo=userStorageRepo, reply_message_service=replyMessageService))
     
     elif webhookInput.user_text in all_enquete_options:
         return updateUserInfoController(
-            webhookInput, 
+            input=webhookInput, 
             usecase=NewUpdateUserInfo(user_storage_repo=userStorageRepo, reply_message_service=replyMessageService)
             )
     
     elif webhookInput.user_text in all_quick_reply_options:
         return quickReplyMessageController(
-            webhookInput,
+            input=webhookInput,
             usecase=NewQuickReplyMessage(reply_message_service=replyMessageService)
             )
     

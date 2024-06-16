@@ -9,7 +9,7 @@ from app.entities.io.io import WebhookInput
 
 class RegisterUserFromLine(ABC):
     @abstractmethod
-    def exceute(self, user: User) -> Any:
+    def exceute(self, input: WebhookInput) -> Any:
         pass
     
     

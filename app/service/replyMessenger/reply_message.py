@@ -12,6 +12,6 @@ class ReplyMessageService(ABC):
         pass
     
     @abstractmethod
-    def reply_message(self, reply_token: Any, reply_text: str) -> None:
+    def reply_message(self, reply_token: str, reply_text: str) -> None:
         pass
     

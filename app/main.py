@@ -52,6 +52,7 @@ async def health():
 @v1Router.post("/webhook")
 async def callback(request: Request):
     data = await request.json()
+    logging.info(data)
     return messageManager(data)
     
 app = FastAPI()

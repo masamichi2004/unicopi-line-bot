@@ -8,7 +8,7 @@ from typing import Any, List, Tuple
 
 class UpdateUserInfo(ABC):
     @abstractmethod
-    def excute(self, user: WebhookInput) -> Tuple[Any, Exception]:
+    def excute(self, input: WebhookInput) -> Tuple[Any, Exception]:
         pass
     
 class UpdateUserInfoImpl(UpdateUserInfo):

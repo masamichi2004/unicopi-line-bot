@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from app.entities.user.user import User
-from typing import Any
+from typing import Any, Dict
 
 class UserStorageRepository(ABC):
     @abstractmethod
@@ -8,5 +8,9 @@ class UserStorageRepository(ABC):
         pass
     
     @abstractmethod
-    def update_user_info(self, user: User) -> Any:
+    def is_user_exist(self, user_id: str) -> bool:
+        pass
+    
+    @abstractmethod
+    def update_user_info(self, query: str, update_values: Dict[str, str]) -> Any:
         pass

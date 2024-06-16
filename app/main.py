@@ -97,5 +97,5 @@ async def messageManager(data: Any) -> Any:
     else: 
         return {"detail": "No event found"}
     
-all_enquete_options = ['男性', '女性', 'その他', '立命館大学(BKC)', '立命館大学(BKC以外)', 'その他の大学', '1回生', '2回生', '3回生', '4回生']
-all_quick_reply_options = ['立命館大学BKCエリア', '立命館大学OICエリア','BKCエリアのクーポン', 'OICエリアのクーポン']
+all_enquete_options = ['男性', '女性', 'その他', '立命館大学(BKC)', '立命館大学(BKC以外)', 'その他の大学', '1回生', '2回生', '3回生', '4回生', '院生', 'クーポンを取得']
+all_quick_reply_options = ['店舗情報一覧を取得', '立命館大学BKCエリア', '立命館大学OICエリア','BKCエリアのクーポン', 'OICエリアのクーポン']

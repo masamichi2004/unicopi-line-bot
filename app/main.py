@@ -77,6 +77,7 @@ def messageManager(data: Any) -> Any:
         user_text = data['events'][0]['message']['text'],
         reply_token = data['events'][0]['replyToken']
     )
+    logging.info(webhookInput)
     
     if webhookInput.user_text == 'アンケートに回答する':
         return registerUserFromLineController(

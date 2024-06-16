@@ -1,0 +1,2 @@
+def healthController():
+    return "OK"

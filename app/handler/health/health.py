@@ -1,2 +1,0 @@
-def healthHandler():
-    return "OK"

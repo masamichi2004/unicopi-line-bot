@@ -7,7 +7,7 @@ from app.repository.line_repository import LineRepository
 from app.usecase.line_use_case import LineUseCase
 from app.repository.userStorage.mongodb.mongodb import  UserStorageRepository, NewUserStorageRepository
 from app.service.replyMessenger.LINE.line import ReplyMessageService, NewReplyMessageService
-from app.handler.health.health import healthHandler
+from app.controller.health.health import healthController
 from dotenv import load_dotenv
 from typing import Tuple
 import logging
@@ -40,13 +40,17 @@ healthRouter = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-app = FastAPI()
+v1Router = APIRouter(
+    prefix="/v1",
+    tags=["v1"],
+    responses={404: {"description": "Not found"}},
+)
 
 @healthRouter.get("/")
 async def health():
-    return healthHandler()
+    return healthController()
 
-@app.post("/webhook")
+@v1Router.post("/webhook")
 async def callback(request: Request):
     data = await request.json()
     logging.info(data)
@@ -99,6 +103,9 @@ async def callback(request: Request):
             return Exception("Invalid message")
     return {"Error": "Event not found"}
 
+app = FastAPI()
+app.include_router(healthRouter)
+app.include_router(v1Router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -107,6 +114,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-app.include_router(healthRouter)

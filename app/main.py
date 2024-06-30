@@ -64,7 +64,7 @@ async def callback(request: Request):
             if user_message == '店舗情報一覧を取得':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['立命館大学BKCエリア', '立命館大学OICエリア'],
+                    options=['立命館大学OICエリア', '立命館大学BKCエリア'],
                     reply_text='取得したい大学エリアを指定してください'
                 )
             elif user_message == '立命館大学BKCエリア':
@@ -95,7 +95,7 @@ async def callback(request: Request):
                     )
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['立命館大学BKCエリア(クーポン)', '立命館大学OICエリア(クーポン)'],
+                    options=['立命館大学OICエリア(クーポン)', '立命館大学BKCエリア(クーポン)'],
                     reply_text='取得したいクーポンの大学エリアを指定してください'
                 )  
 

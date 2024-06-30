@@ -3,7 +3,9 @@ from pymongo import MongoClient
 from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
-from app.repository.line_repository import LineRepository
+from linebot.models import TextSendMessage
+from app.service.line_messaging_api import LineMessagingApi
+from app.repository.user_storage import UserStorageRepository
 from app.usecase.line_use_case import LineUseCase
 from app.controller.health.health import healthController
 from dotenv import load_dotenv
@@ -22,9 +24,9 @@ def newLineClient() -> Tuple[LineBotApi, WebhookHandler]:
     return api, handler
     
 
-line_repository = LineRepository(*newLineClient())
-
-line_use_case = LineUseCase(line_repository)
+line_messaging_api = LineMessagingApi(*newLineClient())
+user_storage = UserStorageRepository(newMongoClient())
+line_use_case = LineUseCase(line_messaging_api)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -50,7 +52,7 @@ async def callback(request: Request):
     data = await request.json()
     logging.info(data)
     
-    if line_repository.is_event_exist(data):
+    if line_messaging_api.is_event_exist(data):
         user_message = data['events'][0]['message']['text']
         reply_token = data['events'][0]['replyToken']
         try:

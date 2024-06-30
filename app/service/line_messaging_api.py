@@ -2,7 +2,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.models import TextSendMessage
 from typing import Dict, Any
 
-class LineRepository:
+class LineMessagingApi:
     def __init__(self, line_bot_api: LineBotApi, handler: WebhookHandler):
         self.line_bot_api = line_bot_api
         self.handler = handler

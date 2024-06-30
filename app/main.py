@@ -102,14 +102,14 @@ async def callback(request: Request):
             elif user_message == '立命館大学BKCエリア(クーポン)':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメンクーポン(BKC)', 'カフェクーポン(BKC)', 'デートクーポン(BKC)'],
+                    options=['ラーメンクーポン(BKC)',],
                     reply_text='BKCエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
                 )
 
             elif user_message == '立命館大学OICエリア(クーポン)':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメンクーポン(OIC)', 'カフェクーポン(OIC)', 'デートクーポン(OIC)'],
+                    options=['ラーメンクーポン(OIC)',],
                     reply_text='OICエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
                 )
 

@@ -58,7 +58,7 @@ async def callback(request: Request):
         line_id = data['events'][0]['source']['userId']
 
         user = user_storage.find_user(line_id)
-        
+
         try:
             # 店舗情報
             if user_message == '店舗情報一覧を取得':
@@ -120,12 +120,14 @@ async def callback(request: Request):
                         reply_token,
                         TextSendMessage(text='アンケートは既に回答済みです。')
                     )
-                
+
                 result = user_storage.register_user(line_id)
                 if result == 'OK':
                     return line_messaging_api.reply_message(
                         reply_token,
-                        TextSendMessage(text='現在使用率を調査するためにアンケートを実施しております。\nアンケートにご回答いただくとメニューからクーポンの取得が可能になります！\n下記Google Formのリンクからアンケートにご回答いただくようお願いいたします')
+                        TextSendMessage(
+                            text="現在使用率を調査するためにアンケートを実施しております。\nアンケートにご回答いただくとメニューからクーポンの取得が可能になります！\n下記Google Formのリンクからアンケートにご回答いただくようお願いいたします。\n\nhttps://forms.gle/NGXyR7pJngU4bbRa9"
+                        ),
                     )
 
         except IndexError:

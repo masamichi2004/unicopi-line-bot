@@ -5,8 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from linebot import LineBotApi, WebhookHandler
 from app.repository.line_repository import LineRepository
 from app.usecase.line_use_case import LineUseCase
-from app.repository.userStorage.mongodb.mongodb import  UserStorageRepository, NewUserStorageRepository
-from app.service.replyMessenger.LINE.line import ReplyMessageService, NewReplyMessageService
 from app.controller.health.health import healthController
 from dotenv import load_dotenv
 from typing import Tuple
@@ -23,9 +21,6 @@ def newLineClient() -> Tuple[LineBotApi, WebhookHandler]:
     handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
     return api, handler
     
-
-userStorageRepo:UserStorageRepository = NewUserStorageRepository(newMongoClient())
-replyMessengerService:ReplyMessageService = NewReplyMessageService(*newLineClient())
 
 line_repository = LineRepository(*newLineClient())
 
@@ -63,19 +58,19 @@ async def callback(request: Request):
             if user_message == '店舗情報一覧を取得':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['大阪茨木キャンパス(OIC)', 'びわこ草津キャンパス(BKC)'],
-                    reply_text='ご自身が在籍しているキャンパスを選択してください。'
+                    options=['立命館大学BKCエリア', '立命館大学OICエリア'],
+                    reply_text='取得したい大学エリアを指定してください'
                 )
-            elif user_message == '大阪茨木キャンパス(OIC)':
+            elif user_message == '立命館大学BKCエリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメン', 'カフェ', 'デート'],
+                    options=['ラーメン(BKC)', 'カフェ(BKC)', 'デート(BKC)'],
                     reply_text='大阪茨木キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
-            elif user_message == 'びわこ草津キャンパス(BKC)':
+            elif user_message == '立命館大学OICエリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメン', 'カフェ', 'デート'],
+                    options=['ラーメン(OIC)', 'カフェ(OIC)', 'デート(OIC)'],
                     reply_text='びわこ草津キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
             elif user_message == 'あいうえお':
@@ -89,16 +84,24 @@ async def callback(request: Request):
             elif user_message == 'クーポンを取得':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['OIC', 'BKC'],
-                    reply_text='在籍中のキャンパスを選択してください。'
+                    options=['立命館大学BKCエリア(クーポン)', '立命館大学OICエリア(クーポン)'],
+                    reply_text='取得したいクーポンの大学エリアを指定してください'
                 )  
                 
-            elif user_message in ['OIC', 'BKC']:
+            elif user_message == '立命館大学BKCエリア(クーポン)':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメンクーポン', 'カフェクーポン', 'デートクーポン'],
-                    reply_text=f'{user_message}のクーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
+                    options=['ラーメンクーポン(BKC)', 'カフェクーポン(BKC)', 'デートクーポン(BKC)'],
+                    reply_text='BKCエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
                 )
+                
+            elif user_message == '立命館大学OICエリア(クーポン)':
+                return await line_use_case.quick_reply_message(
+                    reply_token,
+                    options=['ラーメンクーポン(OIC)', 'カフェクーポン(OIC)', 'デートクーポン(OIC)'],
+                    reply_text='OICエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
+                )
+                
         except IndexError:
             return Exception("Invalid message")
     return {"Error": "Event not found"}

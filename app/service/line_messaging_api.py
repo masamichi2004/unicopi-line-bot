@@ -10,9 +10,6 @@ class LineMessagingApi:
     def is_event_exist(self, data: Dict[str, Any]) -> bool:
         return data['events']
     
-    def reply_message(self, reply_token: Any, reply: TextSendMessage):
+    async def reply_message(self, reply_token: Any, reply: TextSendMessage):
         self.line_bot_api.reply_message(reply_token, reply)
         
-    async def reply_message_async(self, reply_token: Any, reply: TextSendMessage) -> None:
-        await self.line_bot_api.reply_message(reply_token, reply)
-        return

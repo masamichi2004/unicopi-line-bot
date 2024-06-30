@@ -100,12 +100,6 @@ async def callback(request: Request):
                 )  
 
             elif user_message == '立命館大学BKCエリア(クーポン)':
-                if user is None:
-                    return line_messaging_api.reply_message(
-                        reply_token,
-                        TextSendMessage(text='クーポンを取得するためにはアンケートへの回答が必須です。アンケートのご回答をお願いします。')
-                    )
-
                 return await line_use_case.quick_reply_message(
                     reply_token,
                     options=['ラーメンクーポン(BKC)', 'カフェクーポン(BKC)', 'デートクーポン(BKC)'],
@@ -113,11 +107,6 @@ async def callback(request: Request):
                 )
 
             elif user_message == '立命館大学OICエリア(クーポン)':
-                if user is None:
-                    return line_messaging_api.reply_message(
-                        reply_token,
-                        TextSendMessage(text='クーポンを取得するためにはアンケートへの回答が必須です。アンケートのご回答をお願いします。')
-                    )
                 return await line_use_case.quick_reply_message(
                     reply_token,
                     options=['ラーメンクーポン(OIC)', 'カフェクーポン(OIC)', 'デートクーポン(OIC)'],

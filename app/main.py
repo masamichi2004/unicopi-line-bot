@@ -71,13 +71,13 @@ async def callback(request: Request):
                 return await line_use_case.quick_reply_message(
                     reply_token,
                     options=['ラーメン(BKC)',],
-                    reply_text='大阪茨木キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
+                    reply_text='立命館大学BKCエリアの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
             elif user_message == '立命館大学OICエリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
                     options=['ラーメン(OIC)', 'カフェ(OIC)', 'デート(OIC)'],
-                    reply_text='びわこ草津キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
+                    reply_text='立命館大学OICエリアの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
             elif user_message == 'あいうえお':
                 return await line_use_case.quick_reply_message(
@@ -103,14 +103,14 @@ async def callback(request: Request):
                 return await line_use_case.quick_reply_message(
                     reply_token,
                     options=['ラーメンクーポン(BKC)',],
-                    reply_text='BKCエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
+                    reply_text='立命館大学BKCエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
                 )
 
             elif user_message == '立命館大学OICエリア(クーポン)':
                 return await line_use_case.quick_reply_message(
                     reply_token,
                     options=['ラーメンクーポン(OIC)',],
-                    reply_text='OICエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
+                    reply_text='立命館大学OICエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
                 )
 
             # アンケート回答

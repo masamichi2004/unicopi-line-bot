@@ -70,7 +70,7 @@ async def callback(request: Request):
             elif user_message == '立命館大学BKCエリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメン(BKC)', 'カフェ(BKC)', 'デート(BKC)'],
+                    options=['ラーメン(BKC)',],
                     reply_text='大阪茨木キャンパスの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
                 )
             elif user_message == '立命館大学OICエリア':

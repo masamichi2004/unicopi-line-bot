@@ -89,7 +89,7 @@ async def callback(request: Request):
             # クーポン情報
             elif user_message == 'クーポンを取得':
                 if user is None:
-                    return await line_messaging_api.reply_message(
+                    return line_messaging_api.reply_message(
                         reply_token,
                         TextSendMessage(text='クーポンを取得するためにはアンケートへの回答が必須です。アンケートのご回答をお願いします。')
                     )
@@ -101,7 +101,7 @@ async def callback(request: Request):
 
             elif user_message == '立命館大学BKCエリア(クーポン)':
                 if user is None:
-                    return await line_messaging_api.reply_message(
+                    return line_messaging_api.reply_message(
                         reply_token,
                         TextSendMessage(text='クーポンを取得するためにはアンケートへの回答が必須です。アンケートのご回答をお願いします。')
                     )
@@ -114,7 +114,7 @@ async def callback(request: Request):
 
             elif user_message == '立命館大学OICエリア(クーポン)':
                 if user is None:
-                    return await line_messaging_api.reply_message(
+                    return line_messaging_api.reply_message(
                         reply_token,
                         TextSendMessage(text='クーポンを取得するためにはアンケートへの回答が必須です。アンケートのご回答をお願いします。')
                     )
@@ -127,14 +127,14 @@ async def callback(request: Request):
             # アンケート回答
             elif user_message == 'アンケートに回答する':
                 if user:
-                    return await line_messaging_api.reply_message(
+                    return line_messaging_api.reply_message(
                         reply_token,
                         TextSendMessage(text='アンケートは既に回答済みです。')
                     )
                 
                 result = user_storage.register_user(line_id)
                 if result == 'OK':
-                    return await line_messaging_api.reply_message(
+                    return line_messaging_api.reply_message(
                         reply_token,
                         TextSendMessage(text='現在使用率を調査するためにアンケートを実施しております。\nアンケートにご回答いただくとメニューからクーポンの取得が可能になります！\n下記Google Formのリンクからアンケートにご回答いただくようお願いいたします')
                     )

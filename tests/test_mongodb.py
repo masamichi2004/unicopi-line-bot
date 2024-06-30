@@ -34,5 +34,5 @@ def testMongoClient() -> MongoClient:
 
 user_storage = TestUserStorageRepository(testMongoClient())
 
-tmp = user_storage.find_user("temp_test")
-print(tmp['answered_enquete'])
+tmp = user_storage.find_user("aaaa")
+print(tmp)

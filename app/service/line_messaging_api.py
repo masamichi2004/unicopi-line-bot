@@ -12,3 +12,4 @@ class LineMessagingApi:
     
     def reply_message(self, reply_token: Any, reply: TextSendMessage):
         self.line_bot_api.reply_message(reply_token, reply)
+        

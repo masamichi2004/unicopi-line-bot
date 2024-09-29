@@ -64,20 +64,26 @@ async def callback(request: Request):
             if user_message == '店舗情報一覧を取得':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['大阪エリア', '滋賀エリア'],
+                    options=['大阪エリア', '京都エリア', '滋賀エリア'],
                     reply_text='探したい店舗のエリアを指定してください'
                 )
             elif user_message == '滋賀エリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメン(BKC)',],
-                    reply_text='滋賀エリアの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
+                    options=['瀬田','南草津'],
+                    reply_text='滋賀のどのエリアを検索しますか？'
                 )
             elif user_message == '大阪エリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメン(OIC)', 'カフェ(OIC)', 'デート(OIC)'],
-                    reply_text='大阪エリアの情報を取得します。\nどのジャンルの店舗情報をお探しですか？'
+                    options=['茨木', '高槻'],
+                    reply_text='大阪のどのエリアを検索しますか？'
+                )
+            elif user_message == '京都エリア':
+                return await line_use_case.quick_reply_message(
+                    reply_token,
+                    options=['京都駅エリア', '衣笠エリア', '河原町エリア'],
+                    reply_text='京都のどのエリアを検索しますか？'
                 )
             elif user_message == 'あいうえお':
                 return await line_use_case.quick_reply_message(
@@ -88,16 +94,16 @@ async def callback(request: Request):
 
             # クーポン情報
             elif user_message == 'クーポンを取得':
-                if user is None:
+                # if user is None:
                     return line_messaging_api.reply_message(
                         reply_token,
-                        TextSendMessage(text='クーポンを取得するためにはアンケートへの回答が必須です。アンケートのご回答をお願いします。')
+                        TextSendMessage(text='現在この機能は使用できません。次回の更新をお待ちください')
                     )
-                return await line_use_case.quick_reply_message(
-                    reply_token,
-                    options=['大阪エリア(クーポン)'],
-                    reply_text='取得したい店舗クーポンのエリアを指定してください'
-                )  
+                # return await line_use_case.quick_reply_message(
+                #     reply_token,
+                #     options=['大阪エリア(クーポン)'],
+                #     reply_text='取得したい店舗クーポンのエリアを指定してください'
+                # )  
 
             # elif user_message == '立命館大学BKCエリア(クーポン)':
             #     return await line_use_case.quick_reply_message(

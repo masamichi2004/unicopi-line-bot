@@ -82,7 +82,7 @@ async def callback(request: Request):
             elif user_message == '京都エリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['京都駅エリア', '衣笠エリア', '河原町エリア'],
+                    options=['京都駅', '衣笠', '河原町'],
                     reply_text='京都のどのエリアを検索しますか？'
                 )
             elif user_message == 'あいうえお':

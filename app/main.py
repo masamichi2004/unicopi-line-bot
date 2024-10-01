@@ -121,7 +121,7 @@ async def callback(request: Request):
             elif user_message == '京都エリア(クーポン)':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['今出川クーポン'],
+                    options=['今出川クーポン', '円町クーポン', '二条クーポン'],
                     reply_text='京都のどのエリアの店舗クーポン情報を取得しますか？'
                 )
 

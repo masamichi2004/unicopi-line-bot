@@ -94,29 +94,35 @@ async def callback(request: Request):
 
             # クーポン情報
             elif user_message == 'クーポンを取得':
-                # if user is None:
+                if user is None:
                     return line_messaging_api.reply_message(
                         reply_token,
-                        TextSendMessage(text='現在この機能は使用できません。次回の更新をお待ちください')
+                        TextSendMessage(text='アンケートに回答していただくとクーポン情報を取得できます')
                     )
-                # return await line_use_case.quick_reply_message(
-                #     reply_token,
-                #     options=['大阪エリア(クーポン)'],
-                #     reply_text='取得したい店舗クーポンのエリアを指定してください'
-                # )  
+                return await line_use_case.quick_reply_message(
+                    reply_token,
+                    options=['大阪エリア(クーポン)', '京都エリア(クーポン)', '滋賀エリア(クーポン)'],
+                    reply_text='取得したい店舗クーポンのエリアを指定してください'
+                )  
 
-            # elif user_message == '立命館大学BKCエリア(クーポン)':
-            #     return await line_use_case.quick_reply_message(
-            #         reply_token,
-            #         options=['ラーメンクーポン(BKC)',],
-            #         reply_text='立命館大学BKCエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
-            #     )
+            elif user_message == '滋賀エリア(クーポン)':
+                return await line_use_case.quick_reply_message(
+                    reply_token,
+                    options=['草津クーポン',],
+                    reply_text='滋賀のどのエリアの店舗クーポン情報を取得しますか？'
+                )
 
             elif user_message == '大阪エリア(クーポン)':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['ラーメンクーポン(OIC)',],
-                    reply_text='立命館大学OICエリアの店舗クーポン情報を取得します。\nどのジャンルのクーポン情報をお探しですか？'
+                    options=['茨木クーポン',],
+                    reply_text='大阪のどのエリアの店舗クーポン情報を取得しますか？'
+                )
+            elif user_message == '京都エリア(クーポン)':
+                return await line_use_case.quick_reply_message(
+                    reply_token,
+                    options=['今出川クーポン'],
+                    reply_text='京都のどのエリアの店舗クーポン情報を取得しますか？'
                 )
 
             # アンケート回答

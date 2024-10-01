@@ -7,7 +7,7 @@ class UserStorageRepository:
     def __init__(self, cli: MongoClient):
         self.cli = cli
         self.db = self.cli['LINE']
-        self.user_collection = self.db['User']
+        self.user_collection = self.db['AnsweredUser-2024']
         
     def find_user(self, line_id: str) -> Any:
         return self.user_collection.find_one({'line_id': line_id})

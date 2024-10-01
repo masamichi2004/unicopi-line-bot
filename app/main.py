@@ -138,7 +138,7 @@ async def callback(request: Request):
                     return line_messaging_api.reply_message(
                         reply_token,
                         TextSendMessage(
-                            text="現在使用率を調査するためにアンケートを実施しております。\nアンケートにご回答いただくとメニューからクーポンの取得が可能になります！\n下記Google Formのリンクからアンケートにご回答いただくようお願いいたします。\n\nhttps://forms.gle/NGXyR7pJngU4bbRa9"
+                            text="現在使用率を調査するためにアンケートを実施しております。\nアンケートにご回答いただくとメニューからクーポンの取得が可能になります！\n下記Google Formのリンクからアンケートにご回答いただくようお願いいたします。\n\nhttps://forms.gle/jd561iiBzt1yC3z87"
                         ),
                     )
 

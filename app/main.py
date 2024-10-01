@@ -70,19 +70,19 @@ async def callback(request: Request):
             elif user_message == '滋賀エリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['瀬田','南草津'],
+                    options=['草津'],
                     reply_text='滋賀のどのエリアを検索しますか？'
                 )
             elif user_message == '大阪エリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['茨木', '高槻'],
+                    options=['茨木',],
                     reply_text='大阪のどのエリアを検索しますか？'
                 )
             elif user_message == '京都エリア':
                 return await line_use_case.quick_reply_message(
                     reply_token,
-                    options=['京都駅', '衣笠', '今出川'],
+                    options=['衣笠', '円町', '二条', '今出川', '一乗寺'],
                     reply_text='京都のどのエリアを検索しますか？'
                 )
             elif user_message == 'あいうえお':
